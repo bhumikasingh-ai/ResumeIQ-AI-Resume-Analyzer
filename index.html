@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ResumeIQ - AI Resume Analyzer</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f6ff;
+    color: #222;
+}
+
+.hero {
+    background: linear-gradient(135deg, #5141e5, #7b32e8);
+    color: white;
+    text-align: center;
+    padding: 45px 20px;
+    border-radius: 0 0 45px 45px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin: 0 0 15px;
+}
+
+.hero p {
+    font-size: 26px;
+    margin: 0;
+}
+
+.container {
+    max-width: 850px;
+    margin: 45px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: white;
+    padding: 35px;
+    border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    font-size: 32px;
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 25px 0 10px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 190px;
+    padding: 18px;
+    border: 1px solid #ddd;
+    border-radius: 18px;
+    font-size: 17px;
+    resize: vertical;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #5745df;
+}
+
+button {
+    width: 100%;
+    margin-top: 30px;
+    padding: 18px;
+    border: none;
+    border-radius: 16px;
+    background: #3e32a8;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #30258e;
+}
+
+#result {
+    display: none;
+    margin-top: 30px;
+}
+
+.result-card {
+    background: white;
+    padding: 30px;
+    margin-top: 20px;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+}
+
+.score {
+    font-size: 55px;
+    font-weight: bold;
+    color: #4939d0;
+    text-align: center;
+}
+
+.result-card h3 {
+    font-size: 25px;
+}
+
+.result-card li {
+    margin: 10px 0;
+    font-size: 17px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+}
+
+@media (max-width: 600px) {
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .hero p {
+        font-size: 20px;
+    }
+
+    .card {
+        padding: 22px;
+    }
+
+    .card h2 {
+        font-size: 27px;
+    }
+
+    textarea {
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+    <h1>🤖 ResumeIQ</h1>
+    <p>AI-Powered Resume Analyzer & ATS Score Checker</p>
+</header>
+
+<main class="container">
+
+<div class="card">
+
+    <h2>📄 Analyze Your Resume</h2>
+
+    <label for="resume">
+        Paste Your Resume
+    </label>
+
+    <textarea
+        id="resume"
+        placeholder="Paste your resume here..."
+    ></textarea>
+
+
+    <label for="job">
+        Paste Job Description
+    </label>
+
+    <textarea
+        id="job"
+        placeholder="Paste the job description here..."
+    ></textarea>
+
+
+    <button onclick="analyzeResume()">
+        🔍 Analyze Resume
+    </button>
+
+</div>
+
+
+<div id="result">
+
+    <div class="result-card">
+
+        <h3>📊 ATS Score</h3>
+
+        <div class="score" id="score">
+            0%
+        </div>
+
+        <p id="keywords"></p>
+
+    </div>
+
+
+    <div class="result-card">
+
+        <h3>✅ Strengths</h3>
+
+        <ul id="strengths"></ul>
+
+    </div>
+
+
+    <div class="result-card">
+
+        <h3>⚠️ Missing Keywords</h3>
+
+        <ul id="missing"></ul>
+
+    </div>
+
+
+    <div class="result-card">
+
+        <h3>💡 Suggestions</h3>
+
+        <ul id="suggestions"></ul>
+
+    </div>
+
+</div>
+
+</main>
+
+
+<footer>
+    Built with HTML, CSS & JavaScript 🚀
+</footer>
+
+
+<script>
+
+function analyzeResume() {
+
+    var resumeBox = document.getElementById("resume");
+    var jobBox = document.getElementById("job");
+
+    var resume = resumeBox.value.toLowerCase();
+    var job = jobBox.value.toLowerCase();
+
+    if (resume.trim() === "") {
+        alert("Please paste your resume first.");
+        resumeBox.focus();
+        return;
+    }
+
+    if (job.trim() === "") {
+        alert("Please paste the job description first.");
+        jobBox.focus();
+        return;
+    }
+
+
+    var cleanJob = job.replace(/[^a-zA-Z0-9+#. ]/g, " ");
+
+    var words = cleanJob.split(/\s+/);
+
+    var stopWords = [
+        "this",
+        "that",
+        "with",
+        "from",
+        "your",
+        "have",
+        "will",
+        "they",
+        "their",
+        "about",
+        "should",
+        "would",
+        "could",
+        "which",
+        "there",
+        "these",
+        "those",
+        "into",
+        "using",
+        "work",
+        "working",
+        "looking",
+        "candidate",
+        "candidates"
+    ];
+
+
+    var uniqueWords = [];
+
+    for (var i = 0; i < words.length; i++) {
+
+        var word = words[i].trim();
+
+        if (
+            word.length > 3 &&
+            stopWords.indexOf(word) === -1 &&
+            uniqueWords.indexOf(word) === -1
+        ) {
+
+            uniqueWords.push(word);
+
+        }
+
+    }
+
+
+    var matched = [];
+    var missing = [];
+
+
+    for (var j = 0; j < uniqueWords.length; j++) {
+
+        if (resume.indexOf(uniqueWords[j]) !== -1) {
+
+            matched.push(uniqueWords[j]);
+
+        } else {
+
+            missing.push(uniqueWords[j]);
+
+        }
+
+    }
+
+
+    var score = 0;
+
+    if (uniqueWords.length > 0) {
+
+        score = Math.round(
+            (matched.length / uniqueWords.length) * 100
+        );
+
+    }
+
+
+    document.getElementById("score").innerText =
+        score + "%";
+
+
+    document.getElementById("keywords").innerText =
+        matched.length +
+        " important keywords matched out of " +
+        uniqueWords.length +
+        ".";
+
+
+    document.getElementById("strengths").innerHTML =
+        "<li>Your resume contains relevant keywords.</li>" +
+        "<li>Your resume includes technical skills and projects.</li>" +
+        "<li>Your resume is suitable for ATS keyword screening.</li>";
+
+
+    if (missing.length > 0) {
+
+        document.getElementById("missing").innerHTML =
+            missing
+            .slice(0, 15)
+            .map(function(word) {
+                return "<li>" + word + "</li>";
+            })
+            .join("");
+
+    } else {
+
+        document.getElementById("missing").innerHTML =
+            "<li>🎉 Great! No major keywords are missing.</li>";
+
+    }
+
+
+    document.getElementById("suggestions").innerHTML =
+        "<li>Add important missing keywords naturally.</li>" +
+        "<li>Use strong action words such as Developed, Designed and Implemented.</li>" +
+        "<li>Add measurable achievements to your projects.</li>" +
+        "<li>Keep your resume simple and ATS-friendly.</li>";
+
+
+    document.getElementById("result").style.display =
+        "block";
+
+
+    document.getElementById("result").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+</script>
+
+</body>
+  </html>
