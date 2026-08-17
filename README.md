@@ -30,7 +30,7 @@ ResumeIQ helps students and job seekers understand how well their resume matches
 2. Paste your resume into the **Paste Your Resume** box.
 3. Paste the target job description into the **Paste Job Description** box.
 4. Click **Analyze Resume**.
-5. Review your ATS score, matched keywords, missing keywords and suggestions.
+5. Review your ATS score, matched keywords, missing keywords, and suggestions.
 
 ## 📁 Project Structure
 
@@ -38,17 +38,25 @@ ResumeIQ helps students and job seekers understand how well their resume matches
 ResumeIQ-AI/
 └── index.html
 ```
-🔮 Future Improvements
-🤖 More advanced AI-based resume analysis
-📊 Detailed scoring categories
-📄 Resume PDF upload
-📈 Skill-gap analysis
-🎯 Job-specific resume suggestions
-📥 Export analysis report
-🌙 Dark mode
-👩‍💻 Author
-Bhumika Singh
+
+## 🔮 Future Improvements
+
+- 🤖 More advanced AI-based resume analysis
+- 📊 Detailed scoring categories
+- 📄 Resume PDF upload
+- 📈 Skill-gap analysis
+- 🎯 Job-specific resume suggestions
+- 📥 Export analysis report
+- 🌙 Dark mode
+
+## 👩‍💻 Author
+
+**Bhumika Singh**
+
 B.Tech CSE Student
-GitHub: @bhumikasingh-ai⁠�
-🌐 Live Demo
-Open ResumeIQ⁠�
+
+GitHub: [@bhumikasingh-ai](https://github.com/bhumikasingh-ai)
+
+## 🌐 Live Demo
+
+[🚀 Open ResumeIQ](#)
